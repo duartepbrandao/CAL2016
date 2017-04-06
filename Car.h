@@ -1,4 +1,7 @@
 #pragma once
+
+using namespace std;
+
 class Car
 {
 private:
@@ -16,6 +19,6 @@ public:
 	int getDestiny();
 	int getOrigin();
 	int getActualPosition();
-	void setActualPosition(int);
+	void setActualPosition(int newPosition);
 };
 

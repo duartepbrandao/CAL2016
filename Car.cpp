@@ -31,7 +31,7 @@ int Car::getDestiny()
 
 int Car::getOrigin()
 {
-	return origin
+	return origin;
 }
 
 int Car::getActualPosition()
@@ -42,7 +42,6 @@ int Car::getActualPosition()
 void Car::setActualPosition(int newPosition)
 {
 	actualPosition = newPosition;
-
 }
 
 int Car::nextID = 0;
