@@ -18,7 +18,7 @@ std::string Exit::getName()
 
 int Exit::getID()
 {
-	return ID;
+	return id;
 }
 
 void Exit::addConnection(Road connection)
@@ -27,3 +27,8 @@ void Exit::addConnection(Road connection)
 }
 
 int Exit::nextID = 0;
+
+Exit::Exit(int ID, string name) {
+this->id = ID;
+	this->name=name;
+}

@@ -11,6 +11,7 @@ private:
 
 	int ID;
 	bool status;
+	int idFrom,idTo;
 	int capacity;
 	int distance;
 	vector<Car> cars;
@@ -26,4 +27,6 @@ public:
 	void setStatus(bool status);
 	void addCar(Car car);
 	vector<Car> getCars() const;
+
+	Road(int ID, int idFrom, int idTo, int roadLength, int roadCap, bool roadStatus);
 };

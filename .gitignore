@@ -43,3 +43,9 @@ CAL/\.vs/CAL/v15/
 CAL/
 
 Debug/
+
+\.idea/
+
+cmake-build-debug/
+
+CMakeLists\.txt

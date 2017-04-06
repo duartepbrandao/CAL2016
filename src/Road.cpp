@@ -48,3 +48,12 @@ std::vector<Car> Road::getCars() const
 
 
 int Road::nextID = 0;
+
+Road::Road(int ID, int idFrom, int idTo, int roadLength, int roadCap, bool roadStatus) {
+this->ID = ID;
+	this->idFrom=idFrom;
+	this->idTo=idTo;
+	this->distance=roadLength;
+	this->capacity=roadCap;
+	this->status=roadStatus;
+}
