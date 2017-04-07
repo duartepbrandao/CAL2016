@@ -11,7 +11,7 @@ Car::~Car()
 {
 }
 
-Car::Car(int ID, int origin, int destiny, int actualPosition)
+Car::Car(int ID, int origin, int destiny)
 {
 	this->ID = ID;
 	this->destiny = destiny;

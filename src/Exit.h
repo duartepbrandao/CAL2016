@@ -11,8 +11,10 @@ private:
 	static int nextID;
 
 	int id;
-	std::vector <Road> connections;
+	std::vector <Road*> connections;
 	std::string name;
+    vector<Car*> cars;
+
 
 public:
 	Exit();
@@ -20,8 +22,10 @@ public:
 	~Exit();
 
 	string getName();
-	std::vector<Road> getConnections;
+	std::vector<Road*> getConnections;
 	int getID();
-	void addConnection(Road* connection);
+	void addRoad(Road* connection);
+    void addCar(Car* car);
+    vector<Car*> getCars() const;
 };
 

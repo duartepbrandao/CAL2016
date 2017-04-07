@@ -14,7 +14,7 @@ private:
 public:
 	Car();
 	~Car();
-	Car(int ID, int origin, int destiny, int actualPosition);
+	Car(int ID, int origin, int destiny);
 	int getID();
 	int getDestiny();
 	int getOrigin();

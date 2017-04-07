@@ -36,17 +36,6 @@ void Road::setStatus(bool status)
 	this->status = status;
 }
 
-void Road::addCar(Car car)
-{
-	cars.push_back(car);
-}
-
-std::vector<Car> Road::getCars() const
-{
-	return cars;
-}
-
-
 int Road::nextID = 0;
 
 Road::Road(int ID, int idFrom, int idTo, int roadLength, int roadCap, bool roadStatus) {
