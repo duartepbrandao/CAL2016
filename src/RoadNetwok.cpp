@@ -42,10 +42,10 @@ bool RoadNetwork::readRoads() {
         linestream >> roadLength;
         std::getline(linestream, data, ';');  // read up-to the first ; (discard ;).
         linestream >> roadCap;
-        std::getline(linestream, data, ';');  // read up-to the first ; (discard ;).
-        linestream >> roadStatus;
 
-        Road* newRoad = new Road(idRoad,idFrom,idTo,roadLength,roadCap,roadStatus);
+
+        Road* newRoad = new Road(idRoad,idFrom,idTo,roadLength,roadCap);
+        Road* newRoad1 = new Road(idRoad,idFrom,idTo,roadLength,roadCap);
         map<int,Exit*>::iterator i = exits.find(idFrom);
         if(i != exits.end()){
             i->second->addRoad(newRoad);
@@ -136,6 +136,10 @@ bool RoadNetwork::readExits() {
 int main(int argc, char* argv[])
 {
     //read all files
+    RoadNetwork* network = new RoadNetwork();
+    network->readFiles();
+
+    //set cuts on roads
 
     //fazer o mambo
 
