@@ -2,6 +2,8 @@
 
 using namespace std;
 
+class Lane;
+
 class Car
 {
 private:
@@ -10,7 +12,8 @@ private:
 	int ID;
 	int destiny; //exit
 	int origin;
-	int actualPosition;
+	Lane * actualPosition;
+
 public:
 	Car();
 	~Car();
@@ -18,7 +21,7 @@ public:
 	int getID();
 	int getDestiny();
 	int getOrigin();
-	int getActualPosition();
-	void setActualPosition(int newPosition);
+	Lane * getActualPosition();
+	void setActualPosition(Lane * newPosition);
 };
 
