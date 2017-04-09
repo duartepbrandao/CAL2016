@@ -1,8 +1,8 @@
 #pragma once
-#include <vector>
-#include "Car.h"
 
-using namespace std;
+#include <utility>
+
+class Lane;
 
 class Road
 {
@@ -10,21 +10,16 @@ private:
 	static int nextID;
 
 	int ID;
-	bool status;
-	int idFrom,idTo;
-	int capacity;
-	int distance;
+	int length;
+	std::pair<Lane,Lane> lanes;
 
 public:
 	Road();
 	~Road();
-	int getID() const;
-	bool getStatus() const;
-	int getCapacity() const;
-	int getDistance() const;
-
-	void setStatus(bool status);
-
+	int getID();
+	int getStatus(int ID);
+	int getCapacity(int ID);
+	int getDistance();
 
 	Road(int ID, int idFrom, int idTo, int roadLength, int roadCap);
 };

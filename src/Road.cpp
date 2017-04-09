@@ -1,5 +1,5 @@
 #include "Road.h"
-
+#include "Lane.h"
 
 
 Road::Road()
@@ -11,38 +11,36 @@ Road::~Road()
 {
 }
 
-int Road::getID() const
+int Road::getID()
 {
 	return ID;
 }
 
-bool Road::getStatus() const
+int Road::getStatus(int destID)
 {
-	return status;
+	if (this->lanes.first.getDestID() == destID)
+		return this->lanes.first.getStatus();
+	else
+		return this->lanes.second.getStatus();
 }
 
-int Road::getCapacity() const
+int Road::getCapacity(int id)
 {
-	return capacity;
+	return 0;
 }
 
-int Road::getDistance() const
+int Road::getDistance()
 {
-	return capacity;
-}
-
-void Road::setStatus(bool status)
-{
-	this->status = status;
+	return length;
 }
 
 int Road::nextID = 0;
 
 Road::Road(int ID, int idFrom, int idTo, int roadLength, int roadCap) {
-this->ID = ID;
+/*this->ID = ID;
 	this->idFrom=idFrom;
 	this->idTo=idTo;
 	this->distance=roadLength;
 	this->capacity=roadCap;
-	this->status = true;
+	this->status = true;*/
 }
