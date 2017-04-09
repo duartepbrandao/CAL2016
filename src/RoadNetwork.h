@@ -24,7 +24,7 @@ public:
     ~RoadNetwork();
 
 
-
+    void cutRoad(int from, int to);
 };
 
 

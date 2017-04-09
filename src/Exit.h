@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <map>
 #include "Road.h"
 
 using namespace std;
@@ -11,7 +12,8 @@ private:
 	static int nextID;
 
 	int id;
-	std::vector <Road*> connections;
+    //maped with the road destiny
+	std::map <int,Road*> connections;
 	std::string name;
     vector<Car*> cars;
 
@@ -22,10 +24,11 @@ public:
 	~Exit();
 
 	string getName();
-	std::vector<Road*> getConnections;
+	std::map<int,Road*> getConnections;
 	int getID();
 	void addRoad(Road* connection);
     void addCar(Car* car);
     vector<Car*> getCars() const;
+
 };
 

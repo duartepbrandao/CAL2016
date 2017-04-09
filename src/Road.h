@@ -22,6 +22,7 @@ public:
 	bool getStatus() const;
 	int getCapacity() const;
 	int getDistance() const;
+int	getDestiny();
 
 	void setStatus(bool status);
 

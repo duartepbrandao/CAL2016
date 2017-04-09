@@ -23,7 +23,7 @@ int Exit::getID()
 
 void Exit::addRoad(Road* connection)
 {
-	connections.push_back(connection);
+	connections[connection->getDestiny()]=connection;
 }
 
 int Exit::nextID = 0;

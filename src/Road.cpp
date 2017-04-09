@@ -38,12 +38,16 @@ void Road::setStatus(bool status)
 
 int Road::nextID = 0;
 
-Road::Road(int ID, int idFrom, int idTo, int roadLength, int roadCap) {
-this->ID = ID;
+Road::Road(int idFrom, int idTo, int roadLength, int roadCap) {
+	this->ID = nextID;
 	nextID++;
 	this->idFrom=idFrom;
 	this->idTo=idTo;
 	this->distance=roadLength;
 	this->capacity=roadCap;
 	this->status = true;
+}
+
+int Road::getDestiny() {
+	return idTo;
 }
