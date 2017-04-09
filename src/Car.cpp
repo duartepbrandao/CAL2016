@@ -1,5 +1,5 @@
 #include "Car.h"
-#include "Lane.h"
+
 
 
 Car::Car()
@@ -16,7 +16,7 @@ Car::Car(int ID, int origin, int destiny)
 	this->ID = ID;
 	this->destiny = destiny;
 	this->origin = origin;
-	//this->actualPosition = origin;
+	this->actualPosition = origin;
 }
 
 int Car::getID()
@@ -34,12 +34,12 @@ int Car::getOrigin()
 	return origin;
 }
 
-Lane * Car::getActualPosition()
+int Car::getActualPosition()
 {
 	return actualPosition;
 }
 
-void Car::setActualPosition(Lane * newPosition)
+void Car::setActualPosition(int newPosition)
 {
 	actualPosition = newPosition;
 }

@@ -1,10 +1,9 @@
 #pragma once
-
 #include <vector>
 #include <string>
+#include "Road.h"
 
-class Road;
-class Car;
+using namespace std;
 
 class Exit
 {
@@ -14,19 +13,19 @@ private:
 	int id;
 	std::vector <Road*> connections;
 	std::string name;
-    std::vector<Car*> cars;
+    vector<Car*> cars;
 
 
 public:
 	Exit();
-    Exit(int ID, std::string name);
+    Exit(int ID, string name);
 	~Exit();
 
-	std::string getName();
+	string getName();
 	std::vector<Road*> getConnections;
 	int getID();
 	void addRoad(Road* connection);
     void addCar(Car* car);
-    std::vector<Car*> getCars() const;
+    vector<Car*> getCars() const;
 };
 
