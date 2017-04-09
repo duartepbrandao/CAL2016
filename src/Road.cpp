@@ -40,6 +40,7 @@ int Road::nextID = 0;
 
 Road::Road(int ID, int idFrom, int idTo, int roadLength, int roadCap) {
 this->ID = ID;
+	nextID++;
 	this->idFrom=idFrom;
 	this->idTo=idTo;
 	this->distance=roadLength;

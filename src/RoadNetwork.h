@@ -12,6 +12,7 @@
 class RoadNetwork{
 private:
 map<int,Exit*> exits;
+    vector<Car*> cars;
 
 public:
     bool readFiles();

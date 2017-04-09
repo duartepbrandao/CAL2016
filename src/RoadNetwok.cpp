@@ -26,7 +26,6 @@ bool RoadNetwork::readRoads() {
     int idTo=0;
     int roadLength=0;
     int roadCap=0;
-    bool roadStatus;
     getline(inFile,line);
 
     while(std::getline(inFile, line))
@@ -44,14 +43,17 @@ bool RoadNetwork::readRoads() {
         linestream >> roadCap;
 
 
-        Road* newRoad = new Road(idRoad,idFrom,idTo,roadLength,roadCap);
-        Road* newRoad1 = new Road(idRoad,idFrom,idTo,roadLength,roadCap);
+        Road* newRoad = new Road(idFrom,idTo,roadLength,roadCap);
+        Road* newRoad1 = new Road(idTo,idFrom,roadLength,roadCap);
         map<int,Exit*>::iterator i = exits.find(idFrom);
+        map<int,Exit*>::iterator i1 = exits.find(idTo);
         if(i != exits.end()){
             i->second->addRoad(newRoad);
+            if (i1 != exits.end()){
+                i1->second->addRoad(newRoad1);
+            }else return false;
         }else return false;
     }
-
     inFile.close();
     return true;
 }
@@ -81,12 +83,8 @@ bool RoadNetwork::readCars() { ifstream inFile;
         std::getline(linestream, data, ';');  // read up-to the first ; (discard ;).
         linestream >> destiny;
 
-        Car* newCar = new Car(idCar, origin,destiny);
-        map<int,Exit*>::iterator i = exits.find(origin);
-
-        if(i != exits.end()){
-            i->second->addCar(newCar);
-        }else return false;
+        Car* newCar = new Car(idCar,origin,destiny);
+       cars.push_back(newCar);
     }
 
     inFile.close();

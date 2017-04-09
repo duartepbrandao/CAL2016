@@ -26,5 +26,5 @@ public:
 	void setStatus(bool status);
 
 
-	Road(int ID, int idFrom, int idTo, int roadLength, int roadCap);
+	Road(int idFrom, int idTo, int roadLength, int roadCap);
 };
