@@ -1,6 +1,8 @@
 #pragma once
 
 
+#include <list>
+
 class Car
 {
 private:
@@ -9,15 +11,15 @@ private:
 	int ID;
 	int destiny; //exit
 	int origin;
-	int actualPosition;
 public:
+
+    std::list<int> path;
 	Car();
 	~Car();
 	Car(int ID, int origin, int destiny);
 	int getID();
 	int getDestiny();
 	int getOrigin();
-	int getActualPosition();
-	void setActualPosition(int newPosition);
+    void setPath(std::list<int>);
 };
 

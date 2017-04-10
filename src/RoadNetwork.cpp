@@ -7,7 +7,9 @@
 #include <algorithm>
 #include <limits.h>
 #include <set>
+#include <list>
 #include "Exit.h"
+#include "graphviewer.h"
 #include "RoadNetwork.h"
 
 
@@ -118,9 +120,11 @@ bool RoadNetwork::readExits() {
     while (std::getline(inFile, line)) {
         std::stringstream linestream(line);
         std::string data;
+
         linestream >> idNo;
         std::getline(linestream, data, ';');  // read up-to the first ; (discard ;).
         linestream >> name;
+        std::getline(linestream, data, ';');
         Exit *exitRead = new Exit(idNo, name);
         exits.push_back(exitRead);
     }
@@ -131,11 +135,9 @@ bool RoadNetwork::readExits() {
 
 void RoadNetwork::cutRoad(int from, int to) {
 
-    for (vector<Road *>::iterator it = exits[from]->getConnections().begin();
-         it != exits[from]->getConnections().end();
-         ++it) {
-        if ((*it)->getDestiny() == to) {
-            (*it)->setStatus(false);
+    for (int i = 0; i < exits[from]->getConnections().size(); ++i) {
+        if (exits[from]->getConnections()[i]->getDestiny() == to) {
+            exits[from]->getConnections()[i]->setStatus(false);
         }
     }
 }
@@ -153,13 +155,13 @@ bool moreCuts() {
 }
 
 //returns the path distance and you can get the Exits ID's in pathExit
-int RoadNetwork::dijkstra(vector<Exit *> graph, int start, int end,vector<int>& pathExit) {
+int RoadNetwork::dijkstra(vector<Exit *> graph, int start, int end, vector<int> &pathExit) {
     vector<int> min_distance(graph.size(), INT_MAX);
     min_distance[start] = 0;
     std::set<pair<int, Exit *>> vertices;
     vertices.insert(make_pair(0, graph[start]));
 
-    pathExit.resize(graph.size(),-1);
+    pathExit.resize(graph.size(), -1);
 
     while (!vertices.empty()) {
         int where = vertices.begin()->second->getID();
@@ -168,21 +170,20 @@ int RoadNetwork::dijkstra(vector<Exit *> graph, int start, int end,vector<int>& 
         }
         vertices.erase(vertices.begin());
         for (auto ed : graph[where]->getConnections()) {
-            if (!(ed->getStatus()) continue;
+            if (!(ed->getStatus())) continue;
             if (min_distance[ed->getDestiny()] > min_distance[where] + ed->getDistance()) {
-
                 vertices.erase({min_distance[ed->getDestiny()], graph[ed->getDestiny()]});
                 min_distance[ed->getDestiny()] = min_distance[where] + ed->getDistance();
                 vertices.insert({min_distance[ed->getDestiny()], graph[ed->getDestiny()]});
-                pathExit[ed->getDestiny()]=where;
-                ed->addCar();
+                pathExit[ed->getDestiny()] = where;
+
             }
         }
     }
     return INT_MAX;
 }
 
-const vector<Exit *> &RoadNetwork::getExits() const {
+const vector<Exit *> RoadNetwork::getExits() const {
     return exits;
 }
 
@@ -192,9 +193,34 @@ RoadNetwork::~RoadNetwork() {
 
 }
 
-void RoadNetwork::printPath(int vertex, vector<int> &previous) {
-    for ( ; vertex != -1; vertex = previous[vertex])
-       cout<<vertex<<"<";
+void RoadNetwork::getPath(list<int> fifth) {
+
+    for (std::list<int>::iterator it = fifth.begin(); it != fifth.end(); it++)
+        std::cout << *it << ' ';
+
+}
+
+vector<Car *> RoadNetwork::getCars() const {
+    return cars;
+}
+
+void RoadNetwork::printPath(list<int> list) {
+
+    for (std::list<int>::iterator it = list.begin(); it != list.end(); it++) {
+
+        int id1 = list.front();
+        list.pop_front();
+        if (!list.empty()) {
+            int id2 = list.front();
+            for (int i = 0; i < exits[id1]->getConnections().size(); ++i) {
+                if (exits[id1]->getConnections()[i]->getDestiny() == id2) {
+                    cout<<"from "<<id1<<" to "<<id2<<endl;
+                    gv->setEdgeColor(exits[id1]->getConnections()[i]->getID(), "green");
+                }
+            }
+        }else
+        break;
+    }
 }
 
 
@@ -207,7 +233,7 @@ int main(int argc, char *argv[]) {
     network.readCars();
     bool br = true;
 
-    /*
+
     int from, to;
     do {
         cout << "Which Roads do you want to cut? (From:To)" << endl;
@@ -215,22 +241,63 @@ int main(int argc, char *argv[]) {
         cin >> from;
         cout << "To:";
         cin >> to;
-        network->cutRoad(from, to);
+        network.cutRoad(from, to);
         br = moreCuts();
     } while (br);
-*/
-    //fazer o mambo
+
     vector<int> path;
-    
-    for (vector<Car *>::iterator it = cars.begin(); it != cars.end(); ++it) {
+
+    for (int i = 0; i < network.getCars().size(); i++) {
         path.clear();
-        network.dijkstra(exits, (*it)->getOrigin() , (*it)->getDestiny(), path);
+        network.dijkstra(network.getExits(), network.getCars()[i]->getOrigin(), network.getCars()[i]->getDestiny(),
+                         path);
+        for (int vertex = network.getCars()[i]->getDestiny(); vertex != -1; vertex = path[vertex]) {
+            network.getCars()[i]->path.push_front(vertex);
+        }
     }
-    
-    //network.dijkstra(network.getExits(), 2, 4, path);
 
-    //network.printPath(4,path);
+    network.getPath(network.getCars()[0]->path);
 
+    network.gv = new GraphViewer(800, 800, true);
+    network.gv->createWindow(800, 800);
+
+    network.gv->defineEdgeColor("blue");
+    network.gv->defineVertexColor("yellow");
+
+    for (int i = 0; i < network.getExits().size(); i++) {
+
+        network.gv->addNode(network.getExits()[i]->getID());
+        network.gv->setVertexLabel(network.getExits()[i]->getID(), network.getExits()[i]->getName());
+    }
+
+    for (int i = 0; i < network.getExits().size(); i++) {
+        for (int j = 0; j < network.getExits()[i]->getConnections().size(); ++j) {
+
+            network.gv->addEdge(network.getExits()[i]->getConnections()[j]->getID(),i,
+                                network.getExits()[i]->getConnections()[j]->getDestiny(), EdgeType::DIRECTED);
+            network.gv->setEdgeLabel(network.getExits()[i]->getConnections()[j]->getID(),
+                                     to_string(network.getExits()[i]->getConnections()[j]->getDistance()));
+
+            if (network.getExits()[i]->getConnections()[j]->getStatus()) {
+                network.gv->setEdgeColor(network.getExits()[i]->getConnections()[j]->getID(), "blue");
+            } else {
+
+                network.gv->setEdgeColor(network.getExits()[i]->getConnections()[j]->getID(), "red");
+            }
+        }
+
+    }
+    network.gv->rearrange();
+
+    cout << "Which car do you want to see the path?" << endl;
+    int id;
+    cin >> id;
+
+    network.printPath(network.getCars()[id]->path);
+
+    network.gv->rearrange();
+
+    Sleep(100000);
 
     return 1;
 }

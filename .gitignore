@@ -49,3 +49,23 @@ Debug/
 cmake-build-debug/
 
 CMakeLists\.txt
+
+docs/html/
+
+\.settings/
+
+\.project
+
+arestas\.txt
+
+\.cproject
+
+Ficha JUNG\.doxyfile
+
+icon\.gif
+
+icon\.png
+
+nos\.txt
+
+src/FichaJUNG\.cpp

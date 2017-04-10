@@ -15,8 +15,11 @@ vector<Exit*> exits;
 
     vector<Car*> cars;
 
+
 public:
-    const vector<Exit *> &getExits() const;
+    const vector<Exit *> getExits() const;
+    GraphViewer * gv;
+    vector<Car *> getCars() const;
     bool readFiles();
     bool readExits();
     bool readRoads();
@@ -26,15 +29,15 @@ public:
 
     RoadNetwork();
 
-
     virtual ~RoadNetwork();
 
     int dijkstra(vector<Exit *> graph, int start, int end, vector<int>&);
 
 
     void cutRoad(int from, int to);
+    void getPath(list<int> fifth);
 
-    void printPath(int anEnd, vector<int>& vector);
+    void printPath(list<int> list);
 };
 
 

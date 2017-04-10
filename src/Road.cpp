@@ -18,7 +18,7 @@ int Road::getID() const
 
 bool Road::getStatus() const
 {
-	return status && !(capacity <= load);
+	return status && (capacity > load);
 }
 
 int Road::getCapacity() const
@@ -56,7 +56,7 @@ void Road::setStatus(bool status)
 	this->status = status;
 }
 
-void Road::isFull()
+bool Road::isFull()
 {
 	return (capacity <= load);
 }
@@ -66,6 +66,7 @@ int Road::nextID = 0;
 Road::Road(int idFrom, int idTo, int roadLength, int roadCap) {
 	this->ID = nextID;
 	nextID++;
+    load=0;
 	this->idFrom=idFrom;
 	this->idTo=idTo;
 	this->distance=roadLength;
