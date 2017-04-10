@@ -11,17 +11,25 @@
 
 class RoadNetwork{
 private:
-map<int,Exit*> exits;
+vector<Exit*> exits;
+
     vector<Car*> cars;
 
 public:
+    const vector<Exit *> &getExits() const;
     bool readFiles();
     bool readExits();
     bool readRoads();
     bool readCars();
     //vector<Exit *> getExits();
+
+
     RoadNetwork();
-    ~RoadNetwork();
+
+
+    virtual ~RoadNetwork();
+
+    int dijkstra(vector<Exit *> graph, int start, int end);
 
 
     void cutRoad(int from, int to);

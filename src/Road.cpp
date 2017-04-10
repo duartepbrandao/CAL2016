@@ -28,7 +28,7 @@ int Road::getCapacity() const
 
 int Road::getDistance() const
 {
-	return capacity;
+	return distance;
 }
 
 void Road::setStatus(bool status)

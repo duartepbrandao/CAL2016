@@ -23,7 +23,7 @@ int Exit::getID()
 
 void Exit::addRoad(Road* connection)
 {
-	connections[connection->getDestiny()]=connection;
+	connections.push_back(connection);
 }
 
 int Exit::nextID = 0;
@@ -41,4 +41,8 @@ void Exit::addCar(Car* car)
 std::vector<Car*> Exit::getCars() const
 {
     return cars;
+}
+
+vector<Road *> Exit::getConnections() {
+    return connections;
 }

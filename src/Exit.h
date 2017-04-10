@@ -13,7 +13,7 @@ private:
 
 	int id;
     //maped with the road destiny
-	std::map <int,Road*> connections;
+	vector <Road*> connections;
 	std::string name;
     vector<Car*> cars;
 
@@ -24,7 +24,7 @@ public:
 	~Exit();
 
 	string getName();
-	std::map<int,Road*> getConnections;
+	vector <Road*> getConnections();
 	int getID();
 	void addRoad(Road* connection);
     void addCar(Car* car);

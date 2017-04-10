@@ -5,6 +5,8 @@
 #include <sstream>
 #include <assert.h>
 #include <algorithm>
+#include <limits.h>
+#include <set>
 #include "Exit.h"
 #include "RoadNetwork.h"
 
@@ -26,7 +28,6 @@ bool RoadNetwork::readRoads() {
         return false;
     }
     std::string line;
-    int idRoad = 0;
     int idFrom = 0;
     int idTo = 0;
     int roadLength = 0;
@@ -34,10 +35,10 @@ bool RoadNetwork::readRoads() {
     getline(inFile, line);
 
     while (std::getline(inFile, line)) {
+
         std::stringstream linestream(line);
         std::string data;
-        linestream >> idRoad;
-        std::getline(linestream, data, ';');  // read up-to the first ; (discard ;).
+
         linestream >> idFrom;
         std::getline(linestream, data, ';');  // read up-to the first ; (discard ;).
         linestream >> idTo;
@@ -46,17 +47,11 @@ bool RoadNetwork::readRoads() {
         std::getline(linestream, data, ';');  // read up-to the first ; (discard ;).
         linestream >> roadCap;
 
-
         Road *newRoad = new Road(idFrom, idTo, roadLength, roadCap);
+
         Road *newRoad1 = new Road(idTo, idFrom, roadLength, roadCap);
-        map<int, Exit *>::iterator i = exits.find(idFrom);
-        map<int, Exit *>::iterator i1 = exits.find(idTo);
-        if (i != exits.end()) {
-            i->second->addRoad(newRoad);
-            if (i1 != exits.end()) {
-                i1->second->addRoad(newRoad1);
-            } else return false;
-        } else return false;
+        exits[idFrom]->addRoad(newRoad);
+        exits[idTo]->addRoad(newRoad1);
     }
     inFile.close();
     return true;
@@ -98,6 +93,7 @@ bool RoadNetwork::readCars() {
 bool RoadNetwork::readFiles() {
     if (readExits()) {
         if (readRoads()) {
+
             return readCars();
         } else return false;
     } else return false;
@@ -126,7 +122,7 @@ bool RoadNetwork::readExits() {
         std::getline(linestream, data, ';');  // read up-to the first ; (discard ;).
         linestream >> name;
         Exit *exitRead = new Exit(idNo, name);
-        exits[idNo] = exitRead;
+        exits.push_back(exitRead);
     }
 
     inFile.close();
@@ -134,40 +130,14 @@ bool RoadNetwork::readExits() {
 }
 
 void RoadNetwork::cutRoad(int from, int to) {
-    map<int, Exit *>::iterator i = exits.find(from);
 
-    if (i != exits.end()) {
-        map<int, Road *>::iterator i2 =
-                i->second->getConnections.find(to);
-        i2->second->setStatus(false);
-
+    for (vector<Road *>::iterator it = exits[from]->getConnections().begin();
+         it != exits[from]->getConnections().end();
+         ++it) {
+        if ((*it)->getDestiny() == to) {
+            (*it)->setStatus(false);
+        }
     }
-}
-
-
-int main(int argc, char *argv[]) {
-    //read all files
-    RoadNetwork *network = new RoadNetwork();
-    network->readFiles();
-
-    bool br = true;
-
-    int from,to;
-    do {
-        cout << "Which Roads do you want to cut? (From:To)"<<endl;
-        cout<<"From:";
-        cin>> from;
-        cout<<"To:";
-        cin>> to;
-        network->cutRoad(from, to);
-        br = moreCuts();
-    } while (br);
-
-    //fazer o mambo
-
-
-
-    return 1;
 }
 
 
@@ -180,4 +150,67 @@ bool moreCuts() {
         return false;
     }
     return true;
+}
+
+
+int RoadNetwork::dijkstra(vector<Exit *> graph, int start, int end) {
+    vector<int> min_distance(graph.size(), INT_MAX);
+    min_distance[start] = 0;
+    std::set<pair<int, Exit *>> vertices;
+    vertices.insert(make_pair(0, graph[start]));
+
+    while (!vertices.empty()) {
+        int where = vertices.begin()->second->getID();
+        if (where == end) {
+            return min_distance[where];
+        }
+        vertices.erase(vertices.begin());
+        for (auto ed : graph[where]->getConnections()) {
+            if (min_distance[ed->getDestiny()] > min_distance[where] + ed->getDistance()) {
+                vertices.erase({min_distance[ed->getDestiny()], graph[ed->getDestiny()]});
+                min_distance[ed->getDestiny()] = min_distance[where] + ed->getDistance();
+                vertices.insert({min_distance[ed->getDestiny()], graph[ed->getDestiny()]});
+            }
+        }
+    }
+    return INT_MAX;
+}
+
+const vector<Exit *> &RoadNetwork::getExits() const {
+    return exits;
+}
+
+RoadNetwork::RoadNetwork() {}
+
+RoadNetwork::~RoadNetwork() {
+
+}
+
+
+int main(int argc, char *argv[]) {
+    //read all files
+    RoadNetwork network;
+
+    network.readExits();
+    network.readRoads();
+
+    bool br = true;
+
+    /*
+    int from, to;
+    do {
+        cout << "Which Roads do you want to cut? (From:To)" << endl;
+        cout << "From:";
+        cin >> from;
+        cout << "To:";
+        cin >> to;
+        network->cutRoad(from, to);
+        br = moreCuts();
+    } while (br);
+*/
+    //fazer o mambo
+    cout << network.dijkstra(network.getExits(), 2, 4);
+
+
+    return 1;
 }
