@@ -14,6 +14,7 @@ private:
 	int idFrom,idTo;
 	int capacity;
 	int distance;
+	int load;
 
 public:
 	Road();
@@ -22,9 +23,13 @@ public:
 	bool getStatus() const;
 	int getCapacity() const;
 	int getDistance() const;
-int	getDestiny();
+	int getLoad() const;
+	
+	int getDestiny();
+	int isFull();
 
 	void setStatus(bool status);
+	void addCar();
 
 
 	Road(int idFrom, int idTo, int roadLength, int roadCap);
