@@ -175,6 +175,7 @@ int RoadNetwork::dijkstra(vector<Exit *> graph, int start, int end,vector<int>& 
                 min_distance[ed->getDestiny()] = min_distance[where] + ed->getDistance();
                 vertices.insert({min_distance[ed->getDestiny()], graph[ed->getDestiny()]});
                 pathExit[ed->getDestiny()]=where;
+                ed->addCar();
             }
         }
     }
@@ -203,7 +204,7 @@ int main(int argc, char *argv[]) {
 
     network.readExits();
     network.readRoads();
-
+    network.readCars();
     bool br = true;
 
     /*
