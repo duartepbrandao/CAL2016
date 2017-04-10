@@ -29,10 +29,12 @@ public:
 
     virtual ~RoadNetwork();
 
-    int dijkstra(vector<Exit *> graph, int start, int end);
+    int dijkstra(vector<Exit *> graph, int start, int end, vector<int>&);
 
 
     void cutRoad(int from, int to);
+
+    void printPath(int anEnd, vector<int>& vector);
 };
 
 

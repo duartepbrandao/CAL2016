@@ -152,12 +152,14 @@ bool moreCuts() {
     return true;
 }
 
-
-int RoadNetwork::dijkstra(vector<Exit *> graph, int start, int end) {
+//returns the path distance and you can get the Exits ID's in pathExit
+int RoadNetwork::dijkstra(vector<Exit *> graph, int start, int end,vector<int>& pathExit) {
     vector<int> min_distance(graph.size(), INT_MAX);
     min_distance[start] = 0;
     std::set<pair<int, Exit *>> vertices;
     vertices.insert(make_pair(0, graph[start]));
+
+    pathExit.resize(graph.size(),-1);
 
     while (!vertices.empty()) {
         int where = vertices.begin()->second->getID();
@@ -167,9 +169,11 @@ int RoadNetwork::dijkstra(vector<Exit *> graph, int start, int end) {
         vertices.erase(vertices.begin());
         for (auto ed : graph[where]->getConnections()) {
             if (min_distance[ed->getDestiny()] > min_distance[where] + ed->getDistance()) {
+
                 vertices.erase({min_distance[ed->getDestiny()], graph[ed->getDestiny()]});
                 min_distance[ed->getDestiny()] = min_distance[where] + ed->getDistance();
                 vertices.insert({min_distance[ed->getDestiny()], graph[ed->getDestiny()]});
+                pathExit[ed->getDestiny()]=where;
             }
         }
     }
@@ -184,6 +188,11 @@ RoadNetwork::RoadNetwork() {}
 
 RoadNetwork::~RoadNetwork() {
 
+}
+
+void RoadNetwork::printPath(int vertex, vector<int> &previous) {
+    for ( ; vertex != -1; vertex = previous[vertex])
+       cout<<vertex<<"<";
 }
 
 
@@ -209,7 +218,10 @@ int main(int argc, char *argv[]) {
     } while (br);
 */
     //fazer o mambo
-    cout << network.dijkstra(network.getExits(), 2, 4);
+    vector<int> path;
+    network.dijkstra(network.getExits(), 2, 4, path);
+
+    network.printPath(4,path);
 
 
     return 1;
