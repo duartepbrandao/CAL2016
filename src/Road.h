@@ -29,7 +29,7 @@ public:
 	int isFull();
 
 	void setStatus(bool status);
-	void setLoad();
+	void setLoad(int l);
 	void addCar();
 	void removeCar();
 
