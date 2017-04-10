@@ -168,6 +168,7 @@ int RoadNetwork::dijkstra(vector<Exit *> graph, int start, int end,vector<int>& 
         }
         vertices.erase(vertices.begin());
         for (auto ed : graph[where]->getConnections()) {
+            if (!(ed->getStatus()) continue;
             if (min_distance[ed->getDestiny()] > min_distance[where] + ed->getDistance()) {
 
                 vertices.erase({min_distance[ed->getDestiny()], graph[ed->getDestiny()]});
