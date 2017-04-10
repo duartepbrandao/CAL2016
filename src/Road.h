@@ -26,7 +26,7 @@ public:
 	int getLoad() const;
 	
 	int getDestiny();
-	int isFull();
+	bool isFull();
 
 	void setStatus(bool status);
 	void setLoad(int l);

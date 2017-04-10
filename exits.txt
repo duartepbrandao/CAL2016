@@ -1,14 +1,14 @@
-ID;Name;
+ID;Name
 0;Lisboa
-1;Viana do Castelo;
-2;Esposende;
-3;Vila do Conde;
-4;Povoa de Varzim;
-5;Matosinhos;
-6;Porto;
-7;Valenca;
-8;Ponte de Lima;
-9;Braga;
-10;Trofa;
-11;Santo Tirso;
-12;Maia;
+1;Viana do Castelo
+2;Esposende
+3;Vila do Conde
+4;Povoa de Varzim
+5;Matosinhos
+6;Porto
+7;Valenca
+8;Ponte de Lima
+9;Braga
+10;Trofa
+11;Santo Tirso
+12;Maia
