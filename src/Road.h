@@ -29,7 +29,9 @@ public:
 	int isFull();
 
 	void setStatus(bool status);
+	void setLoad();
 	void addCar();
+	void removeCar();
 
 
 	Road(int idFrom, int idTo, int roadLength, int roadCap);
