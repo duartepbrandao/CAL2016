@@ -219,9 +219,15 @@ int main(int argc, char *argv[]) {
 */
     //fazer o mambo
     vector<int> path;
-    network.dijkstra(network.getExits(), 2, 4, path);
+    
+    for (vector<Car *>::iterator it = cars.begin(); it != cars.end(); ++it) {
+        path.clear();
+        network.dijkstra(exits, (*it)->getOrigin() , (*it)->getDestiny(), path);
+    }
+    
+    //network.dijkstra(network.getExits(), 2, 4, path);
 
-    network.printPath(4,path);
+    //network.printPath(4,path);
 
 
     return 1;
