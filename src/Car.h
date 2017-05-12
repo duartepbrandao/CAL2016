@@ -16,6 +16,7 @@ public:
     std::list<int> path;
 	Car();
 	~Car();
+	Car(int origin, int destiny);
 	Car(int ID, int origin, int destiny);
 	int getID();
 	int getDestiny();

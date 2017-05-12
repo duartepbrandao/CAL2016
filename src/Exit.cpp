@@ -31,6 +31,8 @@ int Exit::nextID = 0;
 Exit::Exit(int ID, string name) {
 this->id = ID;
 	this->name=name;
+	std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+	this->lowerCaseName = name;
 }
 
 void Exit::addCar(Car* car)
@@ -45,4 +47,8 @@ std::vector<Car*> Exit::getCars() const
 
 vector<Road *> Exit::getConnections() {
     return connections;
+}
+
+const string Exit::getLowerCaseName() const {
+	return lowerCaseName;
 }

@@ -11,11 +11,14 @@ Car::~Car()
 {
 }
 
+int Car::nextID = 0;
+
 Car::Car(int ID, int origin, int destiny)
 {
 	this->ID = ID;
 	this->destiny = destiny;
 	this->origin = origin;
+	this->nextID = ++ID;
 }
 
 int Car::getID()
@@ -33,6 +36,9 @@ int Car::getOrigin()
 	return origin;
 }
 
-
-
-int Car::nextID = 0;
+Car::Car(int origin, int destiny) {
+	this->ID = nextID;
+	this->destiny = destiny;
+	this->origin = origin;
+	this->nextID = ID+1;
+}

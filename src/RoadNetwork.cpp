@@ -11,6 +11,7 @@
 #include "Exit.h"
 #include "graphviewer.h"
 #include "RoadNetwork.h"
+#include "Algorithms.h"
 
 
 bool moreCuts();
@@ -118,13 +119,11 @@ bool RoadNetwork::readExits() {
     getline(inFile, line);
 
     while (std::getline(inFile, line)) {
-        std::stringstream linestream(line);
-        std::string data;
+        int pos = line.find(';');
+        int idNo = stoi(line.substr(0,pos));
+        string name = line.substr(pos+1,line.length());
 
-        linestream >> idNo;
-        std::getline(linestream, data, ';');  // read up-to the first ; (discard ;).
-        linestream >> name;
-        std::getline(linestream, data, ';');
+
         Exit *exitRead = new Exit(idNo, name);
         exits.push_back(exitRead);
     }
@@ -214,25 +213,57 @@ void RoadNetwork::printPath(list<int> list) {
             int id2 = list.front();
             for (int i = 0; i < exits[id1]->getConnections().size(); ++i) {
                 if (exits[id1]->getConnections()[i]->getDestiny() == id2) {
-                    cout<<"from "<<id1<<" to "<<id2<<endl;
+                    cout << "from " << id1 << " to " << id2 << endl;
                     gv->setEdgeColor(exits[id1]->getConnections()[i]->getID(), "green");
                 }
             }
-        }else
-        break;
+        } else
+            break;
     }
 }
 
 
+void versionChoice() {
+cout<<"Which algorithm do you want to use?"<<endl;
+cout<<"1-Diekstra"<<endl;
+cout<<"2-Aproximated match String"<<endl;
+cout<<"3-Exact match String"<<endl;
+
+}
+void RoadNetwork::getPathbyID(int id){
+    printPath(getCars()[id]->path);
+
+    gv->rearrange();
+
+    Sleep(100000);
+}
+
+
+void RoadNetwork::regularPath() {
+    cout << "Which car do you want to see the path?" << endl;
+    int id;
+    cin >> id;
+
+    printPath(getCars()[id]->path);
+
+    gv->rearrange();
+
+    Sleep(100000);
+
+}
+
+void RoadNetwork::addCar(Car *car) {
+    cars.push_back(car);
+}
+
 int main(int argc, char *argv[]) {
     //read all files
     RoadNetwork network;
-
+    Algorithms algorithms;
     network.readExits();
     network.readRoads();
     network.readCars();
     bool br = true;
-
 
     int from, to;
     do {
@@ -245,6 +276,67 @@ int main(int argc, char *argv[]) {
         br = moreCuts();
     } while (br);
 
+    //TODO:validate inputs
+    bool valid_inputs = false;
+    do { versionChoice();
+        int inp;
+        cin >> inp;
+        cin.ignore(1000, '\n');
+        if(inp == 1){
+            //TODO: make this work with the 1st project
+            network.regularPath();
+
+        } else if (inp == 2){
+            string start;
+            string end;
+            cout<<"Onde se encontra?"<<endl;
+            cin >> start;
+            cout<<"Qual o seu destino?"<<endl;
+            cin >> end;
+            //algorithms.aproximated_match();
+        } else if (inp == 3){
+            string start;
+            string end;
+            cout<<"Onde se encontra?"<<endl;
+
+            getline(cin,start);
+            int id_start = algorithms.exact_match(start, network.getExits());
+            if( id_start != -1){
+                cout<<"Qual o seu destino?"<<endl;
+                getline(cin,end);
+                int id_end = algorithms.exact_match(end, network.getExits());
+                if(id_end != -1){
+                    Car* newCar = new Car(id_start, id_end);
+                    network.addCar(newCar);
+
+
+                    vector<int> path;
+                    network.dijkstra(network.getExits(),id_start,id_end,path);
+                    for (int vertex = network.getCars()[newCar->getID()]->getDestiny(); vertex != -1; vertex = path[vertex]) {
+                        network.getCars()[newCar->getID()]->path.push_front(vertex);
+                    }
+                    for (int i = 0; i <path.size() ; ++i) {
+                        network.getPath(network.getCars()[newCar->getID()]->path);
+                        //cout<<network.getExits()[path[i]]->getName()<<endl;
+                    }
+
+                }  else{
+                    cout << "Lugar Desconhecido!!"<<endl;
+                }
+
+            } else{
+                cout << "Lugar Desconhecido!!"<<endl;
+            }
+        }else {
+            valid_inputs = true;
+            cout << "Invalid choice!! please try again!"<<endl;
+        }
+    }
+    while (valid_inputs);
+
+
+
+    //TODO: get some pretty way to make the dijkstra function
     vector<int> path;
 
     for (int i = 0; i < network.getCars().size(); i++) {
@@ -256,7 +348,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    network.getPath(network.getCars()[0]->path);
+    //network.getPath(network.getCars()[0]->path);
 
     network.gv = new GraphViewer(800, 800, true);
     network.gv->createWindow(800, 800);
@@ -273,7 +365,7 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < network.getExits().size(); i++) {
         for (int j = 0; j < network.getExits()[i]->getConnections().size(); ++j) {
 
-            network.gv->addEdge(network.getExits()[i]->getConnections()[j]->getID(),i,
+            network.gv->addEdge(network.getExits()[i]->getConnections()[j]->getID(), i,
                                 network.getExits()[i]->getConnections()[j]->getDestiny(), EdgeType::DIRECTED);
             network.gv->setEdgeLabel(network.getExits()[i]->getConnections()[j]->getID(),
                                      to_string(network.getExits()[i]->getConnections()[j]->getDistance()));
@@ -289,15 +381,8 @@ int main(int argc, char *argv[]) {
     }
     network.gv->rearrange();
 
-    cout << "Which car do you want to see the path?" << endl;
-    int id;
-    cin >> id;
 
-    network.printPath(network.getCars()[id]->path);
 
-    network.gv->rearrange();
-
-    Sleep(100000);
 
     return 1;
 }

@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <algorithm>
 #include "Road.h"
 
 using namespace std;
@@ -15,7 +16,12 @@ private:
     //maped with the road destiny
 	vector <Road*> connections;
 	std::string name;
-    vector<Car*> cars;
+	std::string lowerCaseName;
+public:
+	const string getLowerCaseName() const;
+
+private:
+	vector<Car*> cars;
 
 
 public:

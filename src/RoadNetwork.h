@@ -24,9 +24,10 @@ public:
     bool readExits();
     bool readRoads();
     bool readCars();
+    void addCar(Car* car);
     //vector<Exit *> getExits();
-
-
+    void getPathbyID(int id);
+    void regularPath();
     RoadNetwork();
 
     virtual ~RoadNetwork();
