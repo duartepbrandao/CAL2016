@@ -315,10 +315,9 @@ int main(int argc, char *argv[]) {
                     for (int vertex = network.getCars()[newCar->getID()]->getDestiny(); vertex != -1; vertex = path[vertex]) {
                         network.getCars()[newCar->getID()]->path.push_front(vertex);
                     }
-                    for (int i = 0; i <path.size() ; ++i) {
+                        //print path
                         network.getPath(network.getCars()[newCar->getID()]->path);
-                        //cout<<network.getExits()[path[i]]->getName()<<endl;
-                    }
+
 
                 }  else{
                     cout << "Lugar Desconhecido!!"<<endl;
@@ -337,6 +336,7 @@ int main(int argc, char *argv[]) {
 
 
     //TODO: get some pretty way to make the dijkstra function
+    /*
     vector<int> path;
 
     for (int i = 0; i < network.getCars().size(); i++) {
@@ -380,7 +380,7 @@ int main(int argc, char *argv[]) {
 
     }
     network.gv->rearrange();
-
+*/
 
 
 
