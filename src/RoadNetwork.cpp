@@ -1,5 +1,6 @@
 #include <iostream>
 #include <conio.h>
+#include <winsock2.h>
 #include <windows.h>
 #include <fstream>
 #include <sstream>
@@ -263,18 +264,17 @@ int main(int argc, char *argv[]) {
     network.readExits();
     network.readRoads();
     network.readCars();
-    bool br = true;
 
     int from, to;
-    do {
+    while (moreCuts())
+    {
         cout << "Which Roads do you want to cut? (From:To)" << endl;
         cout << "From:";
         cin >> from;
         cout << "To:";
         cin >> to;
         network.cutRoad(from, to);
-        br = moreCuts();
-    } while (br);
+    }
 
     //TODO:validate inputs
     bool valid_inputs = false;
@@ -290,10 +290,36 @@ int main(int argc, char *argv[]) {
             string start;
             string end;
             cout<<"Onde se encontra?"<<endl;
-            cin >> start;
-            cout<<"Qual o seu destino?"<<endl;
-            cin >> end;
-            //algorithms.aproximated_match();
+
+            getline(cin,start);
+            int id_start = algorithms.aproximated_match(start, network.getExits());
+            if( id_start != -1){
+                cout<<"Melhor resultado: "<< network.getExits()[id_start]->getName()<<endl;
+                cout<<"Qual o seu destino?"<<endl;
+                getline(cin,end);
+                int id_end = algorithms.aproximated_match(end, network.getExits());
+                cout<<"Melhor resultado: "<< network.getExits()[id_end]->getName()<<endl;
+                if(id_end != -1){
+                    Car* newCar = new Car(id_start, id_end);
+                    network.addCar(newCar);
+
+
+                    vector<int> path;
+                    network.dijkstra(network.getExits(),id_start,id_end,path);
+                    for (int vertex = network.getCars()[newCar->getID()]->getDestiny(); vertex != -1; vertex = path[vertex]) {
+                        network.getCars()[newCar->getID()]->path.push_front(vertex);
+                    }
+                    //print path
+                    network.getPath(network.getCars()[newCar->getID()]->path);
+
+
+                }  else{
+                    cout << "Lugar Desconhecido!!"<<endl;
+                }
+
+            } else{
+                cout << "Lugar Desconhecido!!"<<endl;
+            }
         } else if (inp == 3){
             string start;
             string end;
