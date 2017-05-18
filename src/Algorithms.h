@@ -15,6 +15,8 @@ class Algorithms {
 public:
     Algorithms();
 
+    int levenshtein(std::string input, std::string comparison);
+    int aproximated_match(std::string input, vector<Exit*> exits);
     int exact_match(std::string input, std::vector<Exit *> exits);
     vector<int> computePrefix(string basic_string);
     vector<Exit *> aproximated_match(string start, string end);
