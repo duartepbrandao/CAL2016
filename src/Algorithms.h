@@ -16,6 +16,10 @@ public:
     Algorithms();
 
     int exact_match(std::string input, std::vector<Exit *> exits);
+    vector<int> computePrefix(string basic_string);
+    vector<Exit *> aproximated_match(string start, string end);
+
+    bool exact_compare(string input, string name);
 };
 
 
