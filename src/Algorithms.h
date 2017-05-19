@@ -21,7 +21,7 @@ public:
     vector<int> computePrefix(string basic_string);
     vector<Exit *> aproximated_match(string start, string end);
 
-    bool exact_compare(string input, string name);
+    int exact_compare(string input, string name);
 };
 
 
