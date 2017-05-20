@@ -33,7 +33,7 @@ int Algorithms::exact_compare(std::string w, std::string s) {
             }
         }
     }
-    return m;
+    return -1;
 }
 
 
@@ -97,13 +97,21 @@ int Algorithms::aproximated_match(std::string input, vector<Exit *> exits) {
     return exit;
 }
 
-int Algorithms::exact_match(std::string input, vector<Exit *> exits) {
+vector<Exit*> Algorithms::exact_match(std::string input, vector<Exit *> exits) {
     std::transform(input.begin(), input.end(), input.begin(), ::tolower);
+    vector<Exit*> results;
     for (int i = 0; i < exits.size(); ++i) {
-        if (input.compare(exits[i]->getLowerCaseName()) == 0) {
-            return exits[i]->getID();
+       if( exact_compare(input,exits[i]->getLowerCaseName()) > -1){
+           results.push_back(exits[i]);
         }
     }
-    return -1;
+    return results;
+}
+
+void Algorithms::printResults(vector<Exit *> results) {
+    for (int i = 0; i <results.size() ; ++i) {
+        cout<<i+1<<" -- " << results[i]->getName()<<endl;
+    }
+    cout<< "Escolha o inicio do percurso: "<<endl;
 }
 
