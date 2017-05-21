@@ -12,3 +12,16 @@ ID;Name
 10;Trofa
 11;Santo Tirso
 12;Maia
+13;Loudores
+14;Lisboa Nova
+15;Porto Antigo
+16;Lumielas
+17;Malditos Benfiquistas
+18;Cume do Ceu
+19;Aquele sitio mesmo longe
+20;Casa da mae do vasco
+21;Marcelos
+22;Maracuja sabor fresco
+23;Covil do Vilao
+24;Setubel
+25;O Bar da Praia
