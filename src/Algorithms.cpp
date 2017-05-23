@@ -112,6 +112,5 @@ void Algorithms::printResults(vector<Exit *> results) {
     for (int i = 0; i <results.size() ; ++i) {
         cout<<i+1<<" -- " << results[i]->getName()<<endl;
     }
-    cout<< "Escolha o inicio do percurso: "<<endl;
 }
 
